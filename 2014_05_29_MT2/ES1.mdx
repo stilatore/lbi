@@ -1,0 +1,9 @@
+--For every country, the percentage of store sales of top 10 customers in
+--that country over the total sales to customers of that country
+WITH
+	MEMBER total AS [Measures].[Store Sales]
+	MEMBER top10 AS SUM(TOPCOUNT(([Customer].[Country].CURRENTMEMBER, [Customer].[Customer Id].[Customer Id]), 10, [Measures].[Store Sales]), [Measures].[Store Sales])
+	MEMBER ratio AS top10/total, FORMAT_STRING = "Percent"
+SELECT ratio on columns,
+NONEMPTY([Customer].[Country].[Country]) on rows
+FROM Sales

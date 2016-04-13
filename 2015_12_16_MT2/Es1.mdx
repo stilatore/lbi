@@ -1,0 +1,38 @@
+--for every product category,
+--proportion of customers buying that product category on tuesday's
+--over the total number of customers buying that category
+WITH
+	MEMBER ontuesday AS ([Time].[The Day].&[Tuesday], [Measures].[NCustomers])
+	MEMBER total AS ([Measures].[NCustomers])
+	MEMBER ratio AS ontuesday/total, FORMAT_STRING = "Percent"
+
+SELECT ratio on columns,
+NONEMPTY([Product].[Product Category].[Product Category]) on rows
+FROM Sales
+-----------------------
+--for every customer city,
+--number of different product categories bought by customers of that city
+WITH
+	MEMBER diff_cat AS DISTINCTCOUNT([Product].[Product Category].[Product Category])
+
+SELECT diff_cat on columns,
+NONEMPTY([Customer].[City].[City]) on rows
+FROM Sales
+-------------------------
+--for every product category and customer country,
+--the store with the highest proportion of sales over the total sales
+--of that category and country.
+--Result must be ordered by proportion descending
+WITH
+	MEMBER sales AS [Measures].[Store Sales]
+	MEMBER total_sales AS
+		([Store].[Store Id].[ALL], [Measures].[Store Sales])
+	MEMBER ratio AS sales/total_sales, FORMAT_STRING = "Percent"
+SELECT ratio on columns,
+ORDER({GENERATE(NONEMPTY(([Product].[Product Category].[Product Category], [Customer].[Country].[Country])), 
+	TOPCOUNT(
+			([Product].[Product Category].CURRENTMEMBER, 
+			[Customer].[Country].CURRENTMEMBER, 
+			[Store].[Store Id].[Store Id])
+		, 1, ratio))}, ratio, BDESC) on rows
+FROM Sales

@@ -1,0 +1,12 @@
+--for every customer of “LosAngeles”
+--the customer full name, the total sales to the customer
+--and the ratio of sales done during travels
+WITH
+	MEMBER total_sales AS [Measures].[Store Sales]
+	MEMBER home_sales AS ([Store].[Sales City].&[Los Angeles], [Measures].[Store Sales])
+	MEMBER travel_sales AS total_sales - home_sales
+	MEMBER ratio AS travel_sales/total_sales, FORMAT_STRING = "Percent"
+SELECT {total_sales, ratio} on columns,
+	[Customer].[Customer Id].[Customer Id] on rows
+FROM Sales
+WHERE [Customer].[City].&[Los Angeles]

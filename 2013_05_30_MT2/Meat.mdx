@@ -1,0 +1,5 @@
+WITH
+	MEMBER [Meat Sales] as ([Product].[Product Department].&[Meat], [Measures].[Store sales])
+SELECT {[Measures].[Store sales], [Meat Sales]} on columns,
+ORDER(NONEMPTY([Store].[Sales city].[Sales city]), [Meat Sales], DESC) on rows
+FROM Sales

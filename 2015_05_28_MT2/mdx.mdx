@@ -1,0 +1,17 @@
+--28/5/2015
+WITH
+	MEMBER m_i AS
+		([Customer].[Gender].&[F], [Measures].[NCustomers])
+	MEMBER t_i AS
+		[Measures].[NCustomers]
+	SET cities AS
+		Filter([Customer].[City].[City], [Measures].[Store Sales] > 0)
+	MEMBER summation AS
+		SUM(cities, m_i/t_i)
+	MEMBER nCity AS
+		COUNT(([Customer].[Geography].CURRENTMEMBER, cities))
+	MEMBER I AS
+		summation/nCity
+SELECT {summation, nCity , I} on columns,
+NONEMPTY([Customer].[Geography].[Country]) on rows
+FROM Sales

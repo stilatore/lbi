@@ -1,0 +1,14 @@
+--Contingency table
+--A = product family
+--B = customer gender
+WITH
+	MEMBER n AS (([Product].[Product Family].PARENT, [Customer].[Gender].PARENT), [Measures].[Sales Fact Count])
+	MEMBER n1 AS ([Product].[Product Family].PARENT, [Measures].[Sales Fact Count])
+	MEMBER m1 AS ([Customer].[Gender].PARENT, [Measures].[Sales Fact Count])
+	MEMBER a AS [Measures].[Sales Fact Count]
+	MEMBER b AS n1 - a
+	MEMBER c AS m1 - a
+	MEMBER d AS n - n1 - c
+SELECT {a,b,c,d} on columns,
+NONEMPTY(([Product].[Product Family].[Product Family], [Customer].[Gender].[Gender])) on rows
+FROM Sales

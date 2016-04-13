@@ -1,0 +1,16 @@
+--Q1, Median and Q3
+--of Store Sales for customers of each country
+WITH
+	MEMBER med AS 
+		MEDIAN(([Customer].[Country].CURRENTMEMBER, [Customer].[Customer Id].[Customer Id]), [Measures].[Store Sales])
+	MEMBER n AS
+		COUNT((sorted_sales, [Customer].[Geography].CURRENTMEMBER))
+	MEMBER iq1 AS ROUND(n/4, 0)
+	MEMBER iq3 AS n - iq1
+	MEMBER q1 AS ((sorted_sales, [Customer].[Geography].CURRENTMEMBER).ITEM(iq1), [Measures].[Store Sales])
+	MEMBER q3 AS ((sorted_sales, [Customer].[Geography].CURRENTMEMBER).ITEM(iq3), [Measures].[Store Sales])
+	SET sorted_sales AS
+		ORDER(NONEMPTY(([Customer].[Country].[Country], [Customer].[Customer Id].[Customer Id])), [Measures].[Store Sales], BASC)
+SELECT {med, n, iq1, iq3, q1, q3} on columns,
+NONEMPTY([Customer].[Geography].[Country]) on rows
+FROM Sales

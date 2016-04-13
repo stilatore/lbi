@@ -1,0 +1,30 @@
+# JDBC driver list separated by ':'
+jdbcDriver=com.microsoft.sqlserver.jdbc.SQLServerDriver:net.ucanaccess.jdbc.UcanaccessDriver:com.ibm.db2.jcc.DB2Driver:oracle.jdbc.OracleDriver:net.sourceforge.jtds.jdbc.Driver
+
+# Default connection URL
+#jdbcURL=jdbc:ucanaccess://pubs.mdb
+jdbcURL=jdbc:sqlserver://apa.di.unipi.it;DatabaseName=pubs
+#jdbcURL=jdbc:jtds:sqlserver://apa.di.unipi.it/pubs
+#jdbcURL=jdbc:db2://apa.di.unipi.it:50000/lbi
+#jdbcURL=jdbc:oracle:thin:@apa.di.unipi.it:1521:ORCL
+
+# Default connection user and pwd
+userName=lbi
+userPWD=pisa
+
+# user queries
+sqlQuery=select * from sales
+
+# Source connection URL in table copying
+jdbcURLSource=jdbc:sqlserver://apa.di.unipi.it;DatabaseName=pubs
+#jdbcURLSource=jdbc:sqlserver://apa.di.unipi.it;DatabaseName=lbi
+userNameSource=lbi
+userPWDSource=pisa
+tableSource=authors
+
+# Destination connection URL in table copying
+jdbcURLDest=jdbc:ucanaccess://pubs.mdb
+userNameDest=
+userPWDDest=
+tableDest=authors
+

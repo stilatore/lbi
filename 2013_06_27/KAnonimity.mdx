@@ -1,0 +1,14 @@
+--A table with (at least) column A, B, and C is called
+--k-anonymous if for every possible value a of A, b of B and c of C either there is
+--no tuple such that A=a and B=b and C=c, or there are at least k tuples such
+--that A=a and B=b and C=c
+
+--Total sales for each
+--store and product category and month
+--that are 100-anonymous triples
+WITH
+	SET k_anonym AS
+		NONEMPTY(([Store].[Store Id].[Store Id], [Product].[Product Category].[Product Category], [Time].[The Year].[The Year], [Time].[The Month].[The Month]))
+SELECT [Measures].[Store Sales] on columns,
+	FILTER(k_anonym, [Measures].[Sales Fact Count] >= 100) on rows
+FROM Sales

@@ -1,0 +1,7 @@
+--for each customer city, the name and the total sales of the customer with
+--the highest sales in that city
+
+SELECT [Measures].[Store Sales] on columns,
+GENERATE([Customer].[City].[City], 
+	TOPCOUNT(([Customer].[City].CURRENTMEMBER, [Customer].[Customer Id].[Customer Id]), 1, [Measures].[Store Sales])) on rows
+FROM Sales

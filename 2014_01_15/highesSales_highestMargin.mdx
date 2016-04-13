@@ -1,0 +1,9 @@
+--for each city the sales and the margins
+--of the product with the highest sales and
+--of the product with the highest margin
+SELECT {[Measures].[Store Sales], [Measures].[Margin]} on columns,
+	GENERATE([Store].[Sales City].[Sales City],
+		NONEMPTY({TOPCOUNT(([Store].[Sales City].CURRENTMEMBER, [Product].[Product Id].[Product Id]), 1, [Measures].[Store Sales]),
+		TOPCOUNT(([Store].[Sales City].CURRENTMEMBER, [Product].[Product Id].[Product Id]), 1, [Measures].[Margin])})) on rows
+FROM Sales
+

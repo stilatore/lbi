@@ -1,0 +1,10 @@
+--For a given customer c,
+--the frequency of purchases in weekends (FPW)
+--is the number of distinct weekend days (Saturdays or Sundays) in
+--which the customer made a purchase
+--OUTPUT: for each customer, its FPW value
+
+SELECT [Measures].[NBaskets] on columns,
+NONEMPTY(Filter([Customer].[Customer Id].[Customer Id], [Measures].[Store Sales] > 0)) on rows
+FROM Sales
+WHERE {[Time].[The Day].&[Saturday], [Time].[The Day].&[Sunday]}

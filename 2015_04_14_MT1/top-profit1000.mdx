@@ -1,0 +1,7 @@
+--For each store, the name and the total sales of the top-profit
+--customers that sum up to 1000 dollars of profit
+SELECT [Measures].[Store Sales] on columns,
+	GENERATE([Store].[Store Id].[Store Id],
+		NONEMPTY(TOPSUM(([Store].[Store Id].CURRENTMEMBER, [Customer].[Customer Id].[Customer Id]),
+			1000, [Measures].[Profit]))) on rows
+FROM Sales

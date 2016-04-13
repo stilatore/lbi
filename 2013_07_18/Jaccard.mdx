@@ -1,0 +1,13 @@
+--The Jaccard index of the sales in March 1998 of a product category A 
+--is m/n where 
+--m is the number of baskets of March 1998 including A, 
+--and n is the number of baskets including A or sold in March 1998.
+--Jaccard index in March 1998 of all product categories
+WITH
+	MEMBER m AS ([Time].[DayMonthYear].[The Year].&[1998].&[Q1].&[March], [Measures].[NBaskets])
+	MEMBER n AS SUM(({([Product].[Product Category].CURRENTMEMBER, [Time].[DayMonthYear].[ALL]), 
+		([Product].[Product Category].[All],[Time].[DayMonthYear].[The Year].&[1998].&[Q1].&[March])}),[Measures].[NBaskets])
+	MEMBER jaccard AS m/n, FORMAT_STRING = "Percent"
+SELECT {m, n, jaccard} on columns,
+NONEMPTY([Product].[Product Category].[Product Category]) on rows
+FROM Sales;

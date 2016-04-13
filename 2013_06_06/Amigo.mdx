@@ -1,0 +1,7 @@
+--For each month, how many stores did sell at least one unit of the brand “Amigo”?
+WITH MEMBER num AS
+	COUNT(FILTER([Store].[Store Id].[Store Id], [Measures].[Unit Sales] > 0))
+SELECT num on columns,
+[Time].[The Month].[The Month] on rows
+FROM Sales
+WHERE [Product].[Brand Name].&[Amigo]
